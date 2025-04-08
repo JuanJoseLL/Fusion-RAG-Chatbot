@@ -61,13 +61,12 @@ The system is built using Python, FastAPI, LangChain, Chromadb, Infermatic AI Em
 ### High-Level Workflow Diagram
 
 ```mermaid
-graph TD
+graph RD
     A[User Query] --> B(Generate Sub-Queries);
     B --> C{Vector Search per Sub-Query};
     C --> D[Merge Top K Results];
     D --> E{LLM Prompting};
     E --> F[Generated Answer];
-
     subgraph Ingestion [Background Process]
         G[Upload Document] --> H(Split into Chunks);
         H --> I(Embed Chunks);

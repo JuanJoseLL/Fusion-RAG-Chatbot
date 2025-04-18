@@ -1,6 +1,6 @@
 import time
 from typing import Any, Dict
-from fastapi import FastAPI, UploadFile, Form, HTTPException, Depends, BackgroundTasks
+from fastapi import FastAPI, UploadFile, Form, HTTPException, Depends, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 from langchain_core.prompts import ChatPromptTemplate
@@ -9,11 +9,13 @@ from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
 from embedder import InfermaticEmbeddings 
 from fusion_retriever import get_fusion_retriever
 
+
 from config import (
     get_logger, 
     UPLOAD_DIR, 
     TOP_K_INITIAL_SEARCH,
     HF_MODEL_NAME,
+    MODEL_NAME,
     INGEST_ENABLE_INTRA_DOC_SIMILARITY,
     INGEST_SIMILARITY_THRESHOLD,
     INGEST_SIMILAR_NEIGHBORS_TO_LINK,
@@ -164,14 +166,12 @@ async def upload_context(background_tasks: BackgroundTasks, file: UploadFile):
     }
 
 
-@app.post("/chat")
-async def chat(message: str = Form(...)):
-    if not message:
-        raise HTTPException(status_code=400, detail="Message cannot be empty.")
-
-    logger.info(f"Received chat message (truncated): {message[:100]}...")
-
+@app.post("/v1/chat/completions")
+async def chat_completions(request: Request):
     try:
+        payload = await request.json()
+        user_message = payload.get("messages", [])[-1]["content"]
+
         fusion_retriever = get_fusion_retriever(chroma_store, chat_model, TOP_K_INITIAL_SEARCH)
 
         template = """You are a helpful AI assistant. Answer the user's question based *only* 
@@ -186,6 +186,7 @@ async def chat(message: str = Form(...)):
         {question}
 
         Answer:"""
+
         prompt = ChatPromptTemplate.from_template(template)
 
         rag_chain = (
@@ -195,14 +196,32 @@ async def chat(message: str = Form(...)):
             | StrOutputParser()
         )
 
-        reply = await rag_chain.ainvoke(message)
+        reply = await rag_chain.ainvoke(user_message)
 
-        logger.info("RAG chain finished, returning reply.")
-        return {"reply": reply}
+        return {
+            "id": "chatcmpl-mockid",
+            "object": "chat.completion",
+            "created": int(time.time()),
+            "model": MODEL_NAME,
+            "choices": [{
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": reply,
+                },
+                "finish_reason": "stop"
+            }],
+            "usage": {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0
+            }
+        }
 
     except Exception as e:
-        logger.exception(f"Error in chat endpoint: {e}")
-        raise HTTPException(status_code=500, detail="Internal error.")
+        logger.exception(f"OpenAI-compatible endpoint error: {e}")
+        raise HTTPException(status_code=500, detail="Chat error")
+
 
 if __name__ == "__main__":
     import uvicorn

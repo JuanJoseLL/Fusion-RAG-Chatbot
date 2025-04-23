@@ -3,12 +3,19 @@ from typing import Any, Dict
 from fastapi import FastAPI, UploadFile, Form, HTTPException, Depends, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
+import os
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
-from embedder import InfermaticEmbeddings 
+from embedder import InfermaticEmbeddings, save_document
 from fusion_retriever import get_fusion_retriever
-
+from document_processing import load_and_split_document
+from embedder import save_document
+from retriever import get_chroma_retriever, format_docs
+from model_client import CustomChatQwen
+from document_processing import load_and_split_document
+from langchain.vectorstores import Chroma
+from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification 
 
 from config import (
     get_logger, 
@@ -16,18 +23,10 @@ from config import (
     TOP_K_INITIAL_SEARCH,
     HF_MODEL_NAME,
     MODEL_NAME,
-    INGEST_ENABLE_INTRA_DOC_SIMILARITY,
-    INGEST_SIMILARITY_THRESHOLD,
-    INGEST_SIMILAR_NEIGHBORS_TO_LINK,
     ENTITY_LABELS_TO_EXTRACT
     )
 
-from model_client import CustomChatQwen
-from document_processing import load_and_split_document
-from retriever import get_graph_enhanced_retriever, format_docs
-from langchain.vectorstores import Chroma
-import os
-from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification # Added imports
+
 logger = get_logger(__name__)
 
 
@@ -48,14 +47,14 @@ try:
         embedding_function=embedding_model,
         persist_directory=os.path.join(UPLOAD_DIR, "chroma_db")
     )
-    logger.info("Initialized LangChain components (Embeddings, ChatModel, Neo4jGraph, Neo4jVector)")
+    logger.info("Initialized LangChain components (Embeddings, ChatModel, Vectorstore (chroma))")
 except Exception as e:
     logger.exception(f"Fatal error during initialization: {e}")
     raise RuntimeError(f"Failed to initialize core components: {e}")
 
 
 
-app = FastAPI(title="LangChain GraphRAG Agent", version="1.1.0")
+app = FastAPI(title="Fusion-RAG Agent", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -219,7 +218,7 @@ async def chat_completions(request: Request):
         }
 
     except Exception as e:
-        logger.exception(f"OpenAI-compatible endpoint error: {e}")
+        logger.exception(f"Chat endpoint error: {e}")
         raise HTTPException(status_code=500, detail="Chat error")
 
 

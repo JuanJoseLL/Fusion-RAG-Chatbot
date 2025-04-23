@@ -1,58 +1,62 @@
 from typing import List
-from langchain_community.document_loaders import PyPDFLoader, TextLoader # Add TextLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 import hashlib
-from config import (get_logger, CHUNK_SIZE, CHUNK_OVERLAP)
 import os
+from PyPDF2 import PdfReader
+from config import get_logger, CHUNK_SIZE, CHUNK_OVERLAP
 
 logger = get_logger(__name__)
 
+def generate_chunk_id(text: str, index: int, source: str) -> str:
+    """Genera un ID único por chunk."""
+    base = f"{source}-{index}-{hashlib.md5(text.encode()).hexdigest()[:8]}"
+    return base
+
 def load_and_split_document(file_path: str) -> List[Document]:
-    """Loads and splits a document using LangChain components."""
-    try:
-        if file_path.lower().endswith(".pdf"):
-            loader = PyPDFLoader(file_path)
-        elif file_path.lower().endswith(".txt"):
-             loader = TextLoader(file_path, encoding="utf-8") 
-        else:
-            logger.warning(f"Unsupported file type: {file_path}. Skipping.")
+    ext = file_path.lower()
+    documents = []
+
+    # --- Cargar documento ---
+    if ext.endswith(".pdf"):
+        try:
+            reader = PdfReader(file_path)
+            full_text = "\n".join([page.extract_text() or "" for page in reader.pages])
+            documents = [Document(page_content=full_text, metadata={"source": os.path.basename(file_path)})]
+            logger.info(f"Loaded PDF: {file_path} with {len(reader.pages)} pages.")
+        except Exception as e:
+            logger.error(f"Failed to read PDF with PyPDF2: {e}")
             return []
 
-        documents = loader.load() # Returns a list of docs (often 1 per page for PDF)
-
-        if not documents:
-             logger.warning(f"No content loaded from {file_path}")
-             return []
-
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=CHUNK_SIZE,
-            chunk_overlap=CHUNK_OVERLAP,
-            length_function=len,
-            add_start_index=True, 
-        )
-        split_docs = text_splitter.split_documents(documents)
-
-      
-        doc_base_name = os.path.basename(file_path)
-        for i, doc in enumerate(split_docs):
-            
-
-            doc_content = doc.page_content[:100]  
-            content_hash = hashlib.md5(f"{doc_base_name}_{i}_{doc_content}".encode('utf-8')).hexdigest()[:12]
-            chunk_id = f"chunk_{content_hash}"
-            doc.metadata["id"] = chunk_id
-            doc.metadata["chunk_index"] = i
-            doc.metadata["source_document"] = doc_base_name
-            
-            doc.metadata["source"] = doc.metadata.get("source", doc_base_name)
-            doc.metadata["page"] = doc.metadata.get("page", None)
-
-
-
-        logger.info(f"Loaded and split {file_path} into {len(split_docs)} chunks.")
-        return split_docs
-
-    except Exception as e:
-        logger.error(f"Failed to load/split document {file_path}: {e}")
+    elif ext.endswith(".txt"):
+        try:
+            loader = TextLoader(file_path, encoding="utf-8")
+            documents = loader.load()
+            logger.info(f"Loaded TXT file: {file_path}")
+        except Exception as e:
+            logger.error(f"Failed to load text file: {e}")
+            return []
+    else:
+        logger.warning(f"Unsupported file type: {file_path}. Skipping.")
         return []
+
+    if not documents:
+        logger.warning(f"No content loaded from: {file_path}")
+        return []
+
+    # --- Split documents ---
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=CHUNK_SIZE,
+        chunk_overlap=CHUNK_OVERLAP,
+        separators=["\n\n", "\n", " ", ""]
+    )
+
+    split_docs = text_splitter.split_documents(documents)
+    logger.info(f"Split into {len(split_docs)} chunks with chunk_size={CHUNK_SIZE}, overlap={CHUNK_OVERLAP}")
+    
+    # --- Agregar metadata IDs únicos ---
+    for i, doc in enumerate(split_docs):
+        doc.metadata["id"] = generate_chunk_id(doc.page_content, i, doc.metadata.get("source", "unknown"))
+    
+    return split_docs

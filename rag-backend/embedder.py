@@ -5,16 +5,18 @@ from typing import List, Optional
 from dotenv import load_dotenv
 from langchain_core.embeddings import Embeddings
 from config import get_logger
+import chromadb
 
 logger = get_logger(__name__)
 load_dotenv()
 
 INFERMATIC_EMBEDDINGS_ENDPOINT = os.getenv("INFERMATIC_EMBEDDINGS_ENDPOINT")
 INFERMATIC_API_KEY = os.getenv("INFERMATIC_API_KEY")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat-multilingual-e5-base")
+EMBEDDING_MODEL = os.getenv("intfloat-multilingual-e5-base")
 EMBEDDING_RETRIES = 3
-EMBEDDING_TIMEOUT = 30  # seconds
+EMBEDDING_TIMEOUT = 90  # seconds
 
+# --- Clase del embedding ---
 class InfermaticEmbeddings(Embeddings):
     """Wrapper for Infermatic Embeddings API service."""
 
@@ -43,18 +45,25 @@ class InfermaticEmbeddings(Embeddings):
             "Content-Type": "application/json"
         }
 
+        logger.info(f"🔗 Using Infermatic API endpoint: {self.endpoint}")
+        logger.info(f"🔐 API Key starts with: {self.api_key[:5]}...")
+
     def _embed(self, texts: List[str]) -> List[List[float]]:
         if not texts:
-            logger.warning("Attempted to get embeddings for empty text list.")
+            logger.warning("⚠️ Attempted to get embeddings for empty text list.")
             return []
 
         payload = {
             "input": texts,
-            "model": self.model
+            "model": "intfloat-multilingual-e5-base",
         }
+
+        logger.debug(f"📦 Embedding request payload: {payload}")
+        logger.debug(f"🧾 Headers: { {k: ('***' if k.lower() == 'authorization' else v) for k, v in self.headers.items()} }")
 
         for attempt in range(self.retries):
             try:
+                logger.info(f"🔁 Embedding request attempt {attempt + 1} of {self.retries}")
                 response = requests.post(
                     self.endpoint,
                     json=payload,
@@ -62,20 +71,31 @@ class InfermaticEmbeddings(Embeddings):
                     timeout=self.timeout
                 )
 
-                response.raise_for_status()
+                logger.debug(f"📡 Response status code: {response.status_code}")
+                logger.debug(f"📨 Response body: {response.text}")
+
+                response.raise_for_status()  # This will raise if 4xx or 5xx
+
                 response_data = response.json()
 
+                if "data" not in response_data:
+                    logger.error(f"❌ Response JSON missing 'data' field: {response_data}")
+                    raise ValueError("Response JSON missing 'data' field.")
+
                 sorted_data = sorted(response_data["data"], key=lambda x: x["index"])
-                return [item["embedding"] for item in sorted_data]
+                embeddings = [item["embedding"] for item in sorted_data]
+                logger.info(f"✅ Successfully received {len(embeddings)} embeddings.")
+                return embeddings
 
             except requests.HTTPError as e:
-                logger.error(f"Infermatic embeddings request failed (attempt {attempt+1}/{self.retries}): {e}")
+                logger.error(f"❌ HTTPError during Infermatic embedding (attempt {attempt+1}): {e}")
+                logger.error(f"🔍 Response: {response.text}")
                 if attempt + 1 == self.retries:
                     raise ValueError(f"Failed to get embeddings after {self.retries} attempts: {e}")
                 time.sleep(1 * (attempt + 1))
 
             except Exception as e:
-                logger.error(f"Unexpected error during embedding (attempt {attempt+1}/{self.retries}): {e}")
+                logger.error(f"💥 Unexpected error (attempt {attempt+1}): {e}")
                 if attempt + 1 == self.retries:
                     raise ValueError(f"Unexpected error while getting embeddings: {e}")
                 time.sleep(1 * (attempt + 1))
@@ -90,3 +110,23 @@ class InfermaticEmbeddings(Embeddings):
         if not result:
             raise ValueError("Failed to embed query text.")
         return result[0]
+
+    def __call__(self, input: List[str]) -> List[List[float]]:
+        return self.embed_documents(input)
+
+# --- Chroma setup + save util ---
+client = chromadb.PersistentClient(path="./chroma_db")
+embedding_function = InfermaticEmbeddings()
+
+collection = client.get_or_create_collection(
+    name="documents",
+    embedding_function=embedding_function
+)
+
+def save_document(doc_id: str, content: str, metadata: dict = None):
+    collection.add(
+        ids=[doc_id],
+        documents=[content],
+        metadatas=[metadata or {}]
+    )
+    print(f"✅ Document stored: {doc_id}")

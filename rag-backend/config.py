@@ -71,8 +71,8 @@ LLM_TOP_K = 40
 LLM_REPETITION_PENALTY = 1.2
 
 # --- RAG Config ---
-CHUNK_SIZE = 1000
-CHUNK_OVERLAP = 200
+CHUNK_SIZE = 2000
+CHUNK_OVERLAP = 500
 TOP_K_INITIAL_SEARCH = 5 # Vector search results
 GRAPH_CONTEXT_NEIGHBORS = 5 # How many NEXT neighbors to fetch (0 = none)
 

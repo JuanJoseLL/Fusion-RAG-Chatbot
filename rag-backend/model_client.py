@@ -28,7 +28,7 @@ class CustomChatQwen(SimpleChatModel):
     temperature: float = LLM_TEMPERATURE
     top_k: int = LLM_TOP_K
     repetition_penalty: float = LLM_REPETITION_PENALTY
-
+    
     @property
     def _llm_type(self) -> str:
         return "custom_chat_qwen"

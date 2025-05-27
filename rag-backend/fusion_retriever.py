@@ -9,9 +9,15 @@ class LoggedMultiQueryRetriever(MultiQueryRetriever):
         logger.info(f"Fusion RAG generated queries for '{question}': {queries}")
         return queries
 
-def get_fusion_retriever(chroma_store, llm, top_k=5):
+def get_multi_query_retriever(chroma_store, llm, multi_query_k: int):
+    """
+    Initializes and returns a LoggedMultiQueryRetriever.
+    The 'k' parameter for the underlying Chroma retriever is set by multi_query_k.
+    """
+    logger.info(f"Initializing LoggedMultiQueryRetriever with k={multi_query_k} for its base retriever.")
     retriever = LoggedMultiQueryRetriever.from_llm(
-        retriever=chroma_store.as_retriever(search_kwargs={"k": top_k}),
+        retriever=chroma_store.as_retriever(search_kwargs={"k": multi_query_k}),
         llm=llm
+        # include_original=True # Consider if original query results should also be included by MultiQueryRetriever itself
     )
     return retriever

@@ -7,11 +7,12 @@ import os
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
-from embedder import InfermaticEmbeddings, save_document
-from fusion_retriever import get_fusion_retriever
+from embedder import InfermaticEmbeddings # save_document is not used in main.py directly
+# from fusion_retriever import get_fusion_retriever # Replaced by RRFRetriever
+from rrf_retriever import RRFRetriever # Import the new RRFRetriever
 from document_processing import load_and_split_document
-from embedder import save_document
-from retriever import get_chroma_retriever, format_docs
+# from embedder import save_document # Duplicate import
+from retriever import format_docs # get_chroma_retriever is not used in main.py directly
 from model_client import CustomChatQwen
 from document_processing import load_and_split_document
 from langchain.vectorstores import Chroma
@@ -20,10 +21,12 @@ from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassificatio
 from config import (
     get_logger, 
     UPLOAD_DIR, 
-    TOP_K_INITIAL_SEARCH,
+    # TOP_K_INITIAL_SEARCH, # Replaced by RRF specific K values
     HF_MODEL_NAME,
     MODEL_NAME,
-    ENTITY_LABELS_TO_EXTRACT
+    ENTITY_LABELS_TO_EXTRACT,
+    RRF_STANDARD_K,      # New config for RRF
+    RRF_MULTI_QUERY_K    # New config for RRF
     )
 
 
@@ -171,7 +174,16 @@ async def chat_completions(request: Request):
         payload = await request.json()
         user_message = payload.get("messages", [])[-1]["content"]
 
-        fusion_retriever = get_fusion_retriever(chroma_store, chat_model, TOP_K_INITIAL_SEARCH)
+        # Instantiate RRFRetriever
+        rrf_retriever_instance = RRFRetriever(
+            chroma_store=chroma_store,
+            llm_for_multi_query=chat_model,
+            base_retriever_k=RRF_STANDARD_K,
+            multi_query_retriever_k=RRF_MULTI_QUERY_K
+            # RRF_K_CONSTANT is used internally by RRFRetriever
+        )
+        logger.info(f"Initialized RRFRetriever with standard_k={RRF_STANDARD_K}, multi_query_k={RRF_MULTI_QUERY_K}")
+
 
         template = """You are a helpful assistant that is an expert in multiple categories. 
             Including: NVIDIA data center GPUs, Machine Learning, Artificial Intelligence, High Performance
@@ -224,7 +236,7 @@ async def chat_completions(request: Request):
         prompt = ChatPromptTemplate.from_template(template)
 
         rag_chain = (
-            {"context": fusion_retriever | RunnableLambda(format_docs), "question": RunnablePassthrough()}
+            {"context": rrf_retriever_instance | RunnableLambda(format_docs), "question": RunnablePassthrough()}
             | prompt
             | chat_model
             | StrOutputParser()
@@ -232,24 +244,32 @@ async def chat_completions(request: Request):
 
         reply = await rag_chain.ainvoke(user_message)
 
+        # Retrieve usage data from the chat model instance
+        usage_data = chat_model.get_last_usage_data()
+        
+        if not usage_data: # Provide a default if no usage data was captured
+            usage_data = {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0,
+                "detail": "Usage data not available or not provided by API."
+            }
+        logger.info(f"Token usage for request: {usage_data}")
+
         return {
-            "id": "chatcmpl-mockid",
+            "id": "chatcmpl-mockid", # Consider generating a unique ID
             "object": "chat.completion",
             "created": int(time.time()),
-            "model": MODEL_NAME,
+            "model": MODEL_NAME, # This should ideally be self.model_name from chat_model
             "choices": [{
                 "index": 0,
                 "message": {
                     "role": "assistant",
                     "content": reply,
                 },
-                "finish_reason": "stop"
+                "finish_reason": "stop" # Or determine this from API if available
             }],
-            "usage": {
-                "prompt_tokens": 0,
-                "completion_tokens": 0,
-                "total_tokens": 0
-            }
+            "usage": usage_data
         }
 
     except Exception as e:

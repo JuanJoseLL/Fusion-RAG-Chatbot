@@ -4,7 +4,7 @@ import time
 from typing import List, Optional
 from dotenv import load_dotenv
 from langchain_core.embeddings import Embeddings
-from config import get_logger
+from config import get_logger, EMBEDDING_MODEL as CFG_EMBEDDING_MODEL # Import from config
 import chromadb
 
 logger = get_logger(__name__)
@@ -12,7 +12,7 @@ load_dotenv()
 
 INFERMATIC_EMBEDDINGS_ENDPOINT = os.getenv("INFERMATIC_EMBEDDINGS_ENDPOINT")
 INFERMATIC_API_KEY = os.getenv("INFERMATIC_API_KEY")
-EMBEDDING_MODEL = os.getenv("intfloat-multilingual-e5-base")
+# EMBEDDING_MODEL is now imported from config.py
 EMBEDDING_RETRIES = 3
 EMBEDDING_TIMEOUT = 90  # seconds
 
@@ -24,13 +24,13 @@ class InfermaticEmbeddings(Embeddings):
         self,
         endpoint: Optional[str] = None,
         api_key: Optional[str] = None,
-        model: str = EMBEDDING_MODEL,
+        model: str = CFG_EMBEDDING_MODEL, # Use the imported config value
         retries: int = EMBEDDING_RETRIES,
         timeout: int = EMBEDDING_TIMEOUT
     ):
         self.endpoint = endpoint or INFERMATIC_EMBEDDINGS_ENDPOINT
         self.api_key = api_key or INFERMATIC_API_KEY
-        self.model = model
+        self.model = model # This will now correctly use the value from config
         self.retries = retries
         self.timeout = timeout
 
@@ -55,7 +55,7 @@ class InfermaticEmbeddings(Embeddings):
 
         payload = {
             "input": texts,
-            "model": "intfloat-multilingual-e5-base",
+            "model": self.model, # Use self.model here
         }
 
         logger.debug(f"📦 Embedding request payload: {payload}")

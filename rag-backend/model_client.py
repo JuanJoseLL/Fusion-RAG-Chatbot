@@ -28,6 +28,7 @@ class CustomChatQwen(SimpleChatModel):
     temperature: float = LLM_TEMPERATURE
     top_k: int = LLM_TOP_K
     repetition_penalty: float = LLM_REPETITION_PENALTY
+    last_usage_data: Optional[dict] = None # To store usage data from the last call
     
     @property
     def _llm_type(self) -> str:
@@ -46,7 +47,7 @@ class CustomChatQwen(SimpleChatModel):
 
         
         payload = {
-            "model": "Sao10K-72B-Qwen2.5-Kunou-v1-FP8-Dynamic",
+            "model": self.model_name, # Use self.model_name here
             "messages": api_messages,
             "max_tokens": kwargs.get("max_tokens", self.max_tokens),
             "temperature": kwargs.get("temperature", self.temperature),
@@ -77,14 +78,25 @@ class CustomChatQwen(SimpleChatModel):
                     raise e 
 
                 data = response.json()
+                
+                # Extract usage data
+                usage = data.get("usage")
+                if usage:
+                    self.last_usage_data = usage
+                    logger.debug(f"Captured token usage: {usage}")
+                else:
+                    # Reset or set to default if not present in this response
+                    self.last_usage_data = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "detail": "Usage data not provided by API in this call."}
+                    logger.warning("Token usage data not found in API response.")
+
                 if data.get("choices") and data["choices"][0].get("message") and data["choices"][0]["message"].get("content"):
                     content = data["choices"][0]["message"]["content"]
                     if run_manager:
-                       
+                        # run_manager.on_llm_new_token(content) # This is for streaming, not needed here
                         pass 
                     return content
                 else:
-                    error_msg = f"Invalid response structure from LLM API: {data}"
+                    error_msg = f"Invalid response structure from LLM API (missing content): {data}"
                     logger.error(error_msg)
                     if run_manager:
                         run_manager.on_llm_error(ValueError(error_msg), response=response)
@@ -109,3 +121,7 @@ class CustomChatQwen(SimpleChatModel):
                  time.sleep(2 * (attempt + 1))
 
         raise RuntimeError("Failed to get LLM response after multiple retries.")
+
+    def get_last_usage_data(self) -> Optional[dict]:
+        """Returns the token usage data from the last successful API call."""
+        return self.last_usage_data

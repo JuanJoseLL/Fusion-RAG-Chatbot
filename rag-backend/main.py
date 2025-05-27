@@ -1,29 +1,36 @@
 import time
+import os
+import shutil
 from typing import Any, Dict
 from fastapi import FastAPI, UploadFile, Form, HTTPException, Depends, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
+from contextlib import asynccontextmanager # Added for lifespan manager
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
-from embedder import InfermaticEmbeddings, save_document
-from fusion_retriever import get_fusion_retriever
+from embedder import VertexAIEmbeddings # Updated to use Vertex AI embeddings
+# from fusion_retriever import get_fusion_retriever # Replaced by RRFRetriever
+from rrf_retriever import RRFRetriever # Import the new RRFRetriever
 from document_processing import load_and_split_document
-from embedder import save_document
-from retriever import get_chroma_retriever, format_docs
+# from embedder import save_document # Duplicate import
+from retriever import format_docs # get_chroma_retriever is not used in main.py directly
 from model_client import CustomChatQwen
 from document_processing import load_and_split_document
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification 
 
 from config import (
     get_logger, 
     UPLOAD_DIR, 
-    TOP_K_INITIAL_SEARCH,
+    # TOP_K_INITIAL_SEARCH, # Replaced by RRF specific K values
     HF_MODEL_NAME,
     MODEL_NAME,
-    ENTITY_LABELS_TO_EXTRACT
+    ENTITY_LABELS_TO_EXTRACT,
+    RRF_STANDARD_K,      # New config for RRF
+    RRF_MULTI_QUERY_K,   # New config for RRF
+    SOURCE_FILES_DIR     # New config for source files directory
     )
 
 
@@ -39,13 +46,13 @@ try:
         tokenizer=tokenizer,
         aggregation_strategy="simple" 
     )
-    embedding_model = InfermaticEmbeddings() 
+    embedding_model = VertexAIEmbeddings() 
     chat_model = CustomChatQwen()
 
     chroma_store = Chroma(
         collection_name="rag_embeddings",
         embedding_function=embedding_model,
-        persist_directory=os.path.join(UPLOAD_DIR, "chroma_db")
+        persist_directory=os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
     )
     logger.info("Initialized LangChain components (Embeddings, ChatModel, Vectorstore (chroma))")
 except Exception as e:
@@ -53,8 +60,83 @@ except Exception as e:
     raise RuntimeError(f"Failed to initialize core components: {e}")
 
 
+def bulk_ingest_from_source_directory():
+    logger.info(f"Starting bulk ingestion from directory: {SOURCE_FILES_DIR}")
+    processed_files = 0
+    failed_files = 0
 
-app = FastAPI(title="Fusion-RAG Agent", version="1.0.0")
+    if not os.path.exists(SOURCE_FILES_DIR):
+        logger.warning(f"Source files directory not found: {SOURCE_FILES_DIR}. Skipping bulk ingestion.")
+        return
+
+    # Get all supported files first
+    supported_files = []
+    for filename in os.listdir(SOURCE_FILES_DIR):
+        file_path = os.path.join(SOURCE_FILES_DIR, filename)
+        
+        if not os.path.isfile(file_path):
+            logger.debug(f"Skipping non-file item: {filename}")
+            continue
+
+        if filename.lower().endswith((".txt", ".pdf")):
+            supported_files.append((filename, file_path))
+        else:
+            logger.debug(f"Skipping unsupported file type: {filename}")
+    
+    logger.info(f"Found {len(supported_files)} supported files for ingestion")
+    
+    # Process files with delays to respect API quotas
+    for i, (filename, file_path) in enumerate(supported_files):
+        logger.info(f"Found supported file for ingestion ({i+1}/{len(supported_files)}): {filename}")
+        try:
+            # Generate document_id similar to upload_context
+            sanitized_filename = os.path.basename(filename)
+            document_id = "doc_" + sanitized_filename.replace(".", "_").replace(" ", "_")
+            
+            # Call ingest_pipeline directly
+            ingest_pipeline(file_path, document_id)
+            logger.info(f"Successfully completed ingestion for: {filename} with doc_id: {document_id}")
+            processed_files += 1
+            
+            # Add delay between files to respect API quotas (except for the last file)
+            if i < len(supported_files) - 1:
+                delay = 5  # 5 seconds between files
+                logger.info(f"⏱️ Waiting {delay} seconds before processing next file to respect API quotas...")
+                time.sleep(delay)
+                
+        except Exception as e:
+            logger.error(f"Failed to ingest file {filename}: {e}", exc_info=True)
+            failed_files += 1
+            
+            # If we hit quota issues, wait longer before next file
+            if "Quota exceeded" in str(e) or "ResourceExhausted" in str(e):
+                delay = 30  # 30 seconds after quota errors
+                logger.warning(f"🚫 Quota error detected. Waiting {delay} seconds before continuing...")
+                time.sleep(delay)
+    
+    logger.info(f"Bulk ingestion complete. Processed files: {processed_files}, Failed files: {failed_files}")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on startup
+    logger.info("Application startup: Initiating bulk ingestion...")
+    try:
+        # The bulk_ingest_from_source_directory is synchronous.
+        # If it were async, we would 'await' it.
+        # For now, running it directly is fine, but be aware it will block startup until complete.
+        # Consider running in a separate thread if it becomes too slow for startup.
+        # bulk_ingest_from_source_directory()
+        logger.info("Bulk ingestion process completed during startup.")
+    except Exception as e:
+        logger.error(f"Error during startup bulk ingestion: {e}", exc_info=True)
+    
+    yield
+    
+    # Code to run on shutdown (if any)
+    logger.info("Application shutdown.")
+
+app = FastAPI(title="Fusion-RAG Agent", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -171,49 +253,30 @@ async def chat_completions(request: Request):
         payload = await request.json()
         user_message = payload.get("messages", [])[-1]["content"]
 
-        fusion_retriever = get_fusion_retriever(chroma_store, chat_model, TOP_K_INITIAL_SEARCH)
+        # Instantiate RRFRetriever
+        rrf_retriever_instance = RRFRetriever(
+            chroma_store=chroma_store,
+            llm_for_multi_query=chat_model,
+            base_retriever_k=RRF_STANDARD_K,
+            multi_query_retriever_k=RRF_MULTI_QUERY_K
+            # RRF_K_CONSTANT is used internally by RRFRetriever
+        )
+        logger.info(f"Initialized RRFRetriever with standard_k={RRF_STANDARD_K}, multi_query_k={RRF_MULTI_QUERY_K}")
 
-        template = """You are a helpful assistant that is an expert in multiple categories. 
-            Including: NVIDIA data center GPUs, Machine Learning, Artificial Intelligence, High Performance
-            Computing, Large Language Models, Cloud Computing, CAD, and other related technology. Provide the best answer to the question provided.
-            If a question is outside your expertise, decline to answer and ask the user to ask a question 
-            that falls in your expertise. DO NOT answer the question if it is outside your expertise and never mention the documents where you got the information. 
 
-            For NVIDIA GPUs you want to promote: RTX A30, RTX A5000, A40, RTX A6000, RTX A6000 ADA, L40, 
-            L40S, A100 (80GB) PCIe, H100 PCIe, H100 NVL, A100 SXM4, H100 SXM5.
+        template = """Eres un asistente especializado en seguros y pólizas de seguros que trabaja para una compañía de seguros. 
+            Tienes experiencia en: Seguros de Vida, Accidentes Personales, Seguros de Desempleo, Enfermedades Graves, 
+            Muerte Accidental, Seguros Bancarios, Pólizas de Fraude, Incapacidad Total Temporal, Seguros de Vivienda, 
+            Procedimientos de Reclamaciones, Vinculación de Asociados, Condiciones Técnicas de Seguros, y Manuales de Suscripción.
+            
+            Proporciona la mejor respuesta posible a la pregunta basándote en tu conocimiento sobre seguros y pólizas.
+            Si una pregunta está fuera de tu área de expertise en seguros, declina responder cortésmente y pide al usuario 
+            que haga una pregunta relacionada con seguros, pólizas, reclamaciones o procedimientos de seguros. 
+            NO respondas preguntas que no estén relacionadas con seguros y NUNCA menciones los documentos de donde obtuviste la información.
 
-            # CRITICAL INSTRUCTIONS:
-            - Restate the question in a h2 section.
-            - For unordered lists, use <ul> tags with <li> list items. 
-            - For ordered lists, use <ol> tags with <li> list items. 
-            - For bold text, use <strong> tags. 
-            - For italics, use <em> tags.
-            - For headings, use appropriate <h2>, <h3>, <h4> tags.
-            - For paragraphs, use <p> tags after headings.
-            - For tables, use <table> tags with <tr> and <td> tags.
-            - Don't use asterisks in the answer.
-            - Make your answer around 600 words.
-            - Don't link to other websites.
-            - Don't offer any downloads. 
-            - NEVER use ** in your answer.
+            Tu objetivo es ayudar a asociados y clientes con información sobre sus pólizas, procedimientos de reclamación, 
+            coberturas disponibles, requisitos de documentación, tiempos de respuesta, y cualquier otro tema relacionado con seguros.
 
-            Use SEO best practices in the answer for the domain https://massedcompute.com/. Don't list the keywords. 
-
-            Don't include a call to action, social media links, copyright, or other typical footer links. They're already included in a different section. 
-            Format the answer with HTML that will be embedded in an existing webpage using the following example.
-
-            ## Example output:
-            <h2>Question Restated</h2>
-            <p>Your answer starts here...</p>
-            <ul>
-                <li>First item</li>
-                <li>Second item</li>
-            </ul>
-            <p>More text with <strong>bold text</strong> and <em>italic text</em> words.</p>
-
-            Remember: ONLY use HTML tags for formatting. If you're unsure, use simple <p> tags for paragraphs and avoid complex formatting. 
-
-        Context:
         {context}
 
         Question:
@@ -224,7 +287,7 @@ async def chat_completions(request: Request):
         prompt = ChatPromptTemplate.from_template(template)
 
         rag_chain = (
-            {"context": fusion_retriever | RunnableLambda(format_docs), "question": RunnablePassthrough()}
+            {"context": rrf_retriever_instance | RunnableLambda(format_docs), "question": RunnablePassthrough()}
             | prompt
             | chat_model
             | StrOutputParser()
@@ -232,24 +295,32 @@ async def chat_completions(request: Request):
 
         reply = await rag_chain.ainvoke(user_message)
 
+        # Retrieve usage data from the chat model instance
+        usage_data = chat_model.get_last_usage_data()
+        
+        if not usage_data: # Provide a default if no usage data was captured
+            usage_data = {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0,
+                "detail": "Usage data not available or not provided by API."
+            }
+        logger.info(f"Token usage for request: {usage_data}")
+
         return {
-            "id": "chatcmpl-mockid",
+            "id": "chatcmpl-mockid", # Consider generating a unique ID
             "object": "chat.completion",
             "created": int(time.time()),
-            "model": MODEL_NAME,
+            "model": MODEL_NAME, # This should ideally be self.model_name from chat_model
             "choices": [{
                 "index": 0,
                 "message": {
                     "role": "assistant",
                     "content": reply,
                 },
-                "finish_reason": "stop"
+                "finish_reason": "stop" # Or determine this from API if available
             }],
-            "usage": {
-                "prompt_tokens": 0,
-                "completion_tokens": 0,
-                "total_tokens": 0
-            }
+            "usage": usage_data
         }
 
     except Exception as e:

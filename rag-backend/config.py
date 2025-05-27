@@ -53,15 +53,23 @@ def get_logger(name=None):
 
 
 UPLOAD_DIR = 'data/context_files'
-EMBBEDING_TIMEOUT = 30
-EMBBEDING_RETRIES = 3
+SOURCE_FILES_DIR = "txt-files"# Directory for source files to be processed
+EMBBEDING_TIMEOUT = 120  # Increased timeout for Vertex AI
+EMBBEDING_RETRIES = 5   # More retries for quota handling
+EMBEDDING_BATCH_SIZE = 5  # Process embeddings in smaller batches
 
-EMBEDDING_DIMENSION = 512 # text-embedding-3-large
+EMBEDDING_DIMENSION = 768 # text-embedding-005 (Google Vertex AI)
+#EMBEDDING_DIMENSION = 512 # text-embedding-3-large
 #EMBEDDING_DIMENSION = 1536  # text-embedding-3-small
 
 QWEN_API_URL = os.getenv("QWEN_API_URL", "https://api.totalgpt.ai/v1/chat/completions")
 API_KEY = os.getenv("INFERMATIC_API_KEY") # Ensure this is set in your .env
-MODEL_NAME = os.getenv("Sao10K-72B-Qwen2.5-Kunou-v1-FP8-Dynamic")
+EMBEDDING_MODEL = "gemini-embedding-001" # Google Vertex AI embedding model
+MODEL_NAME = os.getenv("MODEL_NAME", "Sao10K-72B-Qwen2.5-Kunou-v1-FP8-Dynamic") # Added default value
+
+# Google Vertex AI Configuration
+GOOGLE_PROJECT_ID = os.getenv("GOOGLE_PROJECT_ID", "your-project-id")
+GOOGLE_LOCATION = os.getenv("GOOGLE_LOCATION", "us-central1")
 
 LLM_TIMEOUT = 120 # seconds
 LLM_RETRIES = 3
@@ -73,12 +81,17 @@ LLM_REPETITION_PENALTY = 1.2
 # --- RAG Config ---
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 500
-TOP_K_INITIAL_SEARCH = 5 # Vector search results
-GRAPH_CONTEXT_NEIGHBORS = 5 # How many NEXT neighbors to fetch (0 = none)
+TOP_K_INITIAL_SEARCH = 5 # Vector search results (Legacy, consider for removal/replacement by RRF values)
+GRAPH_CONTEXT_NEIGHBORS = 5 # How many NEXT neighbors to fetch (0 = none) - Likely intended for knowledge graph traversal, specifying how many neighbor nodes/documents to retrieve to expand context.
 
-INGEST_SIMILARITY_THRESHOLD = 0.80
-INGEST_SIMILAR_NEIGHBORS_TO_LINK = 5
-INGEST_ENABLE_INTRA_DOC_SIMILARITY = "true"
+# RRF Configuration
+RRF_STANDARD_K = 5
+RRF_MULTI_QUERY_K = 3 # Each generated query from multi-query will fetch this many docs
+RRF_K_CONSTANT = 60 # Constant for RRF scoring formula
+
+INGEST_SIMILARITY_THRESHOLD = 0.80 # Probably for identifying sufficiently similar documents/chunks during ingestion, e.g., to link them or flag for review.
+INGEST_SIMILAR_NEIGHBORS_TO_LINK = 5 # If similarity is found during ingestion, this might define how many of the most similar items to link.
+INGEST_ENABLE_INTRA_DOC_SIMILARITY = "true" # If "true", suggests that similarity checks should also be performed between chunks originating from the same document during ingestion.
 
 
 HF_MODEL_NAME =  "dslim/bert-base-NER"

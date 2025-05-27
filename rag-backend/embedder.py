@@ -1,129 +1,151 @@
 import os
-import requests
 import time
 from typing import List, Optional
 from dotenv import load_dotenv
 from langchain_core.embeddings import Embeddings
-from config import get_logger
+from config import get_logger, EMBEDDING_MODEL as CFG_EMBEDDING_MODEL, GOOGLE_PROJECT_ID, GOOGLE_LOCATION
 import chromadb
+from google.cloud import aiplatform
+from vertexai.language_models import TextEmbeddingModel
 
 logger = get_logger(__name__)
 load_dotenv()
 
-INFERMATIC_EMBEDDINGS_ENDPOINT = os.getenv("INFERMATIC_EMBEDDINGS_ENDPOINT")
-INFERMATIC_API_KEY = os.getenv("INFERMATIC_API_KEY")
-EMBEDDING_MODEL = os.getenv("intfloat-multilingual-e5-base")
-EMBEDDING_RETRIES = 3
-EMBEDDING_TIMEOUT = 90  # seconds
+# Initialize Vertex AI
 
-# --- Clase del embedding ---
-class InfermaticEmbeddings(Embeddings):
-    """Wrapper for Infermatic Embeddings API service."""
+aiplatform.init(project=GOOGLE_PROJECT_ID, location=GOOGLE_LOCATION)
+
+EMBEDDING_RETRIES = 5
+EMBEDDING_TIMEOUT = 120  # seconds
+BATCH_SIZE = 1  # Vertex AI requires batch size of 1 for text embeddings
+MIN_DELAY_BETWEEN_REQUESTS = 3  # Minimum seconds between individual requests
+
+# --- Clase del embedding para Vertex AI ---
+class VertexAIEmbeddings(Embeddings):
+    """Wrapper for Google Vertex AI Text Embedding API."""
 
     def __init__(
         self,
-        endpoint: Optional[str] = None,
-        api_key: Optional[str] = None,
-        model: str = EMBEDDING_MODEL,
+        model_name: str = CFG_EMBEDDING_MODEL,
+        project_id: str = GOOGLE_PROJECT_ID,
+        location: str = GOOGLE_LOCATION,
         retries: int = EMBEDDING_RETRIES,
         timeout: int = EMBEDDING_TIMEOUT
     ):
-        self.endpoint = endpoint or INFERMATIC_EMBEDDINGS_ENDPOINT
-        self.api_key = api_key or INFERMATIC_API_KEY
-        self.model = model
+        self.model_name = model_name
+        self.project_id = project_id
+        self.location = location
         self.retries = retries
         self.timeout = timeout
-
-        if not self.endpoint or not self.api_key:
-            raise ValueError(
-                "Missing Infermatic embeddings endpoint or API key. "
-                "Set INFERMATIC_EMBEDDINGS_ENDPOINT and INFERMATIC_API_KEY environment variables."
-            )
-
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-
-        logger.info(f"🔗 Using Infermatic API endpoint: {self.endpoint}")
-        logger.info(f"🔐 API Key starts with: {self.api_key[:5]}...")
+        
+        # Initialize the embedding model
+        try:
+            self.model = TextEmbeddingModel.from_pretrained(self.model_name)
+            logger.info(f"🔗 Using Vertex AI embedding model: {self.model_name}")
+            logger.info(f"🌍 Project: {self.project_id}, Location: {self.location}")
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize Vertex AI embedding model: {e}")
+            raise ValueError(f"Failed to initialize Vertex AI embedding model: {e}")
 
     def _embed(self, texts: List[str]) -> List[List[float]]:
+        """Get embeddings for a list of texts using Vertex AI with quota management."""
         if not texts:
             logger.warning("⚠️ Attempted to get embeddings for empty text list.")
             return []
 
-        payload = {
-            "input": texts,
-            "model": "intfloat-multilingual-e5-base",
-        }
+        # Process in batches to avoid quota exhaustion
+        all_embeddings = []
+        
+        for i in range(0, len(texts), BATCH_SIZE):
+            batch = texts[i:i + BATCH_SIZE]
+            batch_embeddings = self._embed_batch(batch)
+            all_embeddings.extend(batch_embeddings)
+            
+            # Add delay between batches to respect rate limits
+            if i + BATCH_SIZE < len(texts):
+                time.sleep(MIN_DELAY_BETWEEN_REQUESTS)
+                logger.debug(f"⏱️ Waiting {MIN_DELAY_BETWEEN_REQUESTS}s between batches to respect quotas")
+        
+        return all_embeddings
 
-        logger.debug(f"📦 Embedding request payload: {payload}")
-        logger.debug(f"🧾 Headers: { {k: ('***' if k.lower() == 'authorization' else v) for k, v in self.headers.items()} }")
-
+    def _embed_batch(self, texts: List[str]) -> List[List[float]]:
+        """Get embeddings for a single batch of texts with exponential backoff."""
         for attempt in range(self.retries):
             try:
-                logger.info(f"🔁 Embedding request attempt {attempt + 1} of {self.retries}")
-                response = requests.post(
-                    self.endpoint,
-                    json=payload,
-                    headers=self.headers,
-                    timeout=self.timeout
-                )
-
-                logger.debug(f"📡 Response status code: {response.status_code}")
-                logger.debug(f"📨 Response body: {response.text}")
-
-                response.raise_for_status()  # This will raise if 4xx or 5xx
-
-                response_data = response.json()
-
-                if "data" not in response_data:
-                    logger.error(f"❌ Response JSON missing 'data' field: {response_data}")
-                    raise ValueError("Response JSON missing 'data' field.")
-
-                sorted_data = sorted(response_data["data"], key=lambda x: x["index"])
-                embeddings = [item["embedding"] for item in sorted_data]
-                logger.info(f"✅ Successfully received {len(embeddings)} embeddings.")
+                logger.info(f"🔁 Vertex AI embedding batch request attempt {attempt + 1} of {self.retries}")
+                logger.debug(f"📦 Processing batch of {len(texts)} texts for embedding")
+                
+                # Get embeddings from Vertex AI
+                embeddings_response = self.model.get_embeddings(texts)
+                
+                # Extract the embedding vectors
+                embeddings = [embedding.values for embedding in embeddings_response]
+                
+                logger.info(f"✅ Successfully received {len(embeddings)} embeddings from Vertex AI.")
                 return embeddings
 
-            except requests.HTTPError as e:
-                logger.error(f"❌ HTTPError during Infermatic embedding (attempt {attempt+1}): {e}")
-                logger.error(f"🔍 Response: {response.text}")
-                if attempt + 1 == self.retries:
-                    raise ValueError(f"Failed to get embeddings after {self.retries} attempts: {e}")
-                time.sleep(1 * (attempt + 1))
-
             except Exception as e:
-                logger.error(f"💥 Unexpected error (attempt {attempt+1}): {e}")
+                error_msg = str(e)
+                logger.error(f"❌ Error during Vertex AI embedding (attempt {attempt+1}): {error_msg}")
+                
+                # Check if it's a quota error
+                if "Quota exceeded" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+                    # Exponential backoff for quota errors
+                    delay = min(60, (2 ** attempt) * 5)  # Cap at 60 seconds
+                    logger.warning(f"🚫 Quota exceeded. Waiting {delay} seconds before retry...")
+                    time.sleep(delay)
+                elif "ResourceExhausted" in error_msg:
+                    # Different handling for resource exhausted
+                    delay = min(120, (2 ** attempt) * 10)  # Longer delay, cap at 2 minutes
+                    logger.warning(f"⚠️ Resource exhausted. Waiting {delay} seconds before retry...")
+                    time.sleep(delay)
+                else:
+                    # Standard backoff for other errors
+                    delay = (attempt + 1) * 2
+                    time.sleep(delay)
+                
                 if attempt + 1 == self.retries:
-                    raise ValueError(f"Unexpected error while getting embeddings: {e}")
-                time.sleep(1 * (attempt + 1))
+                    if "Quota exceeded" in error_msg:
+                        raise ValueError(f"Quota exceeded after {self.retries} attempts. Please check your Google Cloud quotas and limits.")
+                    else:
+                        raise ValueError(f"Failed to get embeddings after {self.retries} attempts: {e}")
 
         return []
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        """Embed a list of documents."""
         return self._embed(texts)
 
     def embed_query(self, text: str) -> List[float]:
+        """Embed a single query text."""
         result = self._embed([text])
         if not result:
             raise ValueError("Failed to embed query text.")
         return result[0]
 
     def __call__(self, input: List[str]) -> List[List[float]]:
+        """Make the class callable for compatibility."""
         return self.embed_documents(input)
 
 # --- Chroma setup + save util ---
-client = chromadb.PersistentClient(path="./chroma_db")
-embedding_function = InfermaticEmbeddings()
-
-collection = client.get_or_create_collection(
-    name="documents",
-    embedding_function=embedding_function
-)
+def get_chroma_collection():
+    """Lazy initialization of ChromaDB collection to avoid import-time errors."""
+    # Use absolute path to ensure consistency regardless of execution directory
+    import os
+    chroma_db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
+    
+    client = chromadb.PersistentClient(path=chroma_db_path)
+    embedding_function = VertexAIEmbeddings()
+    
+    collection = client.get_or_create_collection(
+        name="rag_embeddings",  # Use consistent collection name
+        embedding_function=embedding_function
+    )
+    return collection
 
 def save_document(doc_id: str, content: str, metadata: dict = None):
+    """Save a document to ChromaDB with Vertex AI embeddings."""
+    collection = get_chroma_collection()
     collection.add(
         ids=[doc_id],
         documents=[content],

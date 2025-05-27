@@ -1,7 +1,7 @@
 from typing import List, Dict
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from config import get_logger, RRF_K_CONSTANT, RRF_STANDARD_K, RRF_MULTI_QUERY_K
@@ -65,29 +65,36 @@ class RRFRetriever(BaseRetriever):
     """
     chroma_store: Chroma
     llm_for_multi_query: BaseChatModel
-    base_retriever_k: int
-    multi_query_retriever_k: int
-    rrf_k_constant: int
-
-    standard_retriever: BaseRetriever
-    multi_query_retriever: BaseRetriever
-
+    base_retriever_k: int = RRF_STANDARD_K
+    multi_query_retriever_k: int = RRF_MULTI_QUERY_K
+    rrf_k_constant: int = RRF_K_CONSTANT
+    
+    # These will be computed fields, not part of the constructor
+    standard_retriever: BaseRetriever = None
+    multi_query_retriever: BaseRetriever = None
+    
+    class Config:
+        arbitrary_types_allowed = True
+    
     def __init__(
         self, 
         chroma_store: Chroma, 
         llm_for_multi_query: BaseChatModel,
         base_retriever_k: int = RRF_STANDARD_K,
-        multi_query_retriever_k: int = RRF_MULTI_QUERY_K, # k for each query in multi-query
-        rrf_k_constant: int = RRF_K_CONSTANT
+        multi_query_retriever_k: int = RRF_MULTI_QUERY_K,
+        rrf_k_constant: int = RRF_K_CONSTANT,
+        **kwargs
     ):
-        super().__init__() # BaseRetriever does not take arguments for __init__
-        self.chroma_store = chroma_store
-        self.llm_for_multi_query = llm_for_multi_query
-        self.base_retriever_k = base_retriever_k
-        self.multi_query_retriever_k = multi_query_retriever_k
-        self.rrf_k_constant = rrf_k_constant
+        super().__init__(
+            chroma_store=chroma_store,
+            llm_for_multi_query=llm_for_multi_query,
+            base_retriever_k=base_retriever_k,
+            multi_query_retriever_k=multi_query_retriever_k,
+            rrf_k_constant=rrf_k_constant,
+            **kwargs
+        )
 
-        # Initialize internal retrievers
+        # Initialize internal retrievers after parent initialization
         self.standard_retriever = self.chroma_store.as_retriever(
             search_kwargs={"k": self.base_retriever_k}
         )
@@ -170,83 +177,3 @@ class RRFRetriever(BaseRetriever):
         )
         logger.info(f"RRFRetriever (async): After fusion, {len(fused_documents)} documents remaining.")
         return fused_documents
-
-# Example usage (for testing purposes, not part of the final app logic here)
-if __name__ == '__main__':
-    # This block would require setting up mock objects or actual instances
-    # of Chroma, LLM, etc. which is complex for a simple file creation.
-    # For now, this serves as a structural placeholder.
-    
-    # Mock documents
-    doc1 = Document(page_content="Doc A content", metadata={"id": "doc_A"})
-    doc2 = Document(page_content="Doc B content", metadata={"id": "doc_B"})
-    doc3 = Document(page_content="Doc C content", metadata={"id": "doc_C"})
-    doc4 = Document(page_content="Doc D content", metadata={"id": "doc_D"})
-
-    list1 = [doc1, doc2, doc3] # Retriever 1 results
-    list2 = [doc2, doc1, doc4] # Retriever 2 results
-
-    fused = reciprocal_rank_fusion([list1, list2], k=2)
-    print("Fused results:")
-    for doc in fused:
-        print(f"ID: {doc.metadata['id']}, Content: '{doc.page_content}'")
-
-    # Expected order (approx, depends on k and exact scores): doc1, doc2, doc4, doc3 or doc1, doc2, doc3, doc4
-    # Scores:
-    # doc1: (1/(0+2)) + (1/(1+2)) = 0.5 + 0.333 = 0.833
-    # doc2: (1/(1+2)) + (1/(0+2)) = 0.333 + 0.5 = 0.833
-    # doc3: (1/(2+2)) = 0.25
-    # doc4: (1/(2+2)) = 0.25
-    # If scores are identical, original order from first appearance might be preserved by sort stability,
-    # or by how items are inserted into the dict then retrieved.
-    # With k=60 (default for RRF_K_CONSTANT)
-    # doc1: (1/60) + (1/61) = 0.01666 + 0.01639 = 0.03305
-    # doc2: (1/61) + (1/60) = 0.01639 + 0.01666 = 0.03305
-    # doc3: (1/62) = 0.01612
-    # doc4: (1/62) = 0.01612
-    # So doc1 and doc2 would be tied, then doc3 and doc4 tied.
-    # The exact order for ties depends on Python's sort stability or dict iteration order.
-
-    print("\nWith k=60 (default RRF_K_CONSTANT):")
-    fused_k60 = reciprocal_rank_fusion([list1, list2]) # Uses RRF_K_CONSTANT
-    for doc in fused_k60:
-        print(f"ID: {doc.metadata['id']}, Content: '{doc.page_content}'")
-
-    # Expected: doc1 and doc2 will have higher summed scores than doc3 and doc4.
-    # The order between doc1 and doc2 (and doc3 and doc4) might vary if scores are identical.
-
-    # Example of how RRFRetriever might be instantiated (conceptual)
-    # from langchain_community.vectorstores import Chroma
-    # from langchain_openai import ChatOpenAI # Or your CustomChatQwen
-    # from embedder import InfermaticEmbeddings
-    #
-    # # Assume chroma_store and chat_model are initialized
-    # # MOCK INITIALIZATION - Replace with actual setup
-    # class MockChroma:
-    #     def as_retriever(self, search_kwargs):
-    #         class MockStdRetriever(BaseRetriever):
-    #             def _get_relevant_documents(self, query): return [doc1,doc2]
-    #             async def _aget_relevant_documents(self, query): return [doc1,doc2]
-    #         return MockStdRetriever()
-    #
-    # class MockLLM(BaseChatModel): # Needs more methods for BaseChatModel
-    #     def _generate(self, messages, stop=None, run_manager=None, **kwargs): pass
-    #     def _llm_type(self) -> str: return "mock"
-
-    # try:
-    #     # rrf_retriever = RRFRetriever(
-    #     #     chroma_store=MockChroma(), 
-    #     #     llm_for_multi_query=MockLLM(),
-    #     #     base_retriever_k=2,
-    #     #     multi_query_retriever_k=1 
-    #     # )
-    #     # results = rrf_retriever.get_relevant_documents("test query")
-    #     # print("\nRRFRetriever results:")
-    #     # for doc in results:
-    #     #     print(f"ID: {doc.metadata['id']}")
-    #     pass
-    # except Exception as e:
-    #     print(f"Error in RRFRetriever example: {e}")
-    #     # This will likely error if LoggedMultiQueryRetriever has complex init
-    #     # or if from_llm expects a more complete LLM object.
-    pass

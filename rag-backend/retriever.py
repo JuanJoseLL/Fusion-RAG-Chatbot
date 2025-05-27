@@ -1,8 +1,13 @@
-from langchain.vectorstores import Chroma
-from embedder import InfermaticEmbeddings
+from langchain_community.vectorstores import Chroma
+from embedder import VertexAIEmbeddings
+import os
 
-def get_chroma_retriever(persist_directory="./chroma_db", collection_name="documents"):
-    embedding_function = InfermaticEmbeddings()
+def get_chroma_retriever(collection_name="rag_embeddings"):
+    """Get ChromaDB retriever with consistent configuration."""
+    # Use absolute path to ensure consistency regardless of execution directory
+    persist_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
+    
+    embedding_function = VertexAIEmbeddings()
 
     vectordb = Chroma(
         persist_directory=persist_directory,

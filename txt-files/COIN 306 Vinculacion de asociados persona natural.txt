@@ -1,0 +1,318 @@
+INSTRUCTIVO
+Título: Vinculación de Asociados Persona Natural    
+1. OBJETIVO
+Establecer las actividades a seguir que permitan asegurar el cumplimiento de los requisitos definidos para el ingreso a la cooperativa de una persona natural.
+2. ALCANCE
+N/A
+3. TÉRMINOS Y DEFINICIONES.
+3.1. Aportes Persona Natural: contribución personal y obligatoria que debe dar toda persona asociada con destino a la formación y al incremento continuo del capital, como base financiera propia de esta Cooperativa.
+3.2. Fuerza Comercial: ejecutivo comercial Coomeva, ejecutivo integral, asesor integral, corredores y ejecutivo comercial medicina prepagada.
+3.3. Prospecto Asociado/Potencial Asociado: es la persona que se encuentra interesada en suscribir un contrato de asociación con la cooperativa.
+3.4. Xtremo Digital: aplicativo utilizado para la administración de la documentación de manera digital.
+3.5. Solicitud única persona natural: Formulario para el ingreso de nuevos asociados a la cooperativa.                         
+
+4. DESCRIPCIÓN
+
+4.1. VINCULACIÓN
+4.1.1.  Una vez la fuerza comercial contacte al prospecto asociado por los diferentes medios (uno a uno - BD carterizado, CRM, Arsen, Wolkvox) y se presenten los beneficios y aceptación a dar inicio a la vinculación en la cooperativa, la fuerza comercial previamente al diligenciamiento del formulario de vinculación, tiene la posibilidad de realizar la consulta del hábito de pago del prospecto por Preselecta. 
+4.1.2. Si el resultado de la calificación es baja o se requiere ampliar información sobre el hábito de pago del prospecto previo al diligenciamiento del formulario de vinculación, la fuerza comercial deberá remitir al prospecto el formato https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-ft-166_-_autorizacion_consulta_centrales_de_riesgo_septiem_2018_(3).docx&wdOrigin=BROWSELINK para firmar y así realizar posterior consulta en centrales de riesgo de acuerdo a lo contemplado en el enlace https://coomalin.darumasoftware.com/app.php/staff/document/view?index=251.
+4.1.3. Mensualmente desde la Coordinación nal de operaciones, se cotejará las consultas realizadas de data crédito por cada regional vs el informe de soportes digitalizados por Xtremo digital con el propósito de controlar consultas y autorizaciones del Prospecto asociado. Sera responsabilidad del Director/a regional comercial GCCA garantizar que el 100% de las consultas cuenten con el soporte.
+4.1.4. Se da inicio al diligenciamiento del formulario de vinculación: 
+https://coomalin.darumasoftware.com/uploads/staff/assets/user5202/archivos/CO-FT-200%20Formulario%20de%20vinculacion%20HM297724%20PEP.pdf
+Nota: Para el ingreso al diligenciamiento del formulario de vinculación electrónico se utiliza el siguiente link:  https://secure.coomeva.com.co/CeroPapelWeb/#/login
+4.1.4.1. Dentro del protocolo de atención de la fuerza comercial se encuentra establecido indicarle al asociado la fecha de activación de sus productos en la cooperativa, teniendo en cuenta el día de su vinculación.
+4.1.4.2. La fecha corte a seleccionar por parte de la fuerza comercial dependerá directamente del día de la vinculación del asociado, de acuerdo con la siguiente tabla:
+- Fecha de corte (5): inicia el 26 del mes anterior hasta el 5 del mes actual.
+- Fecha de corte (10): inicia el 6 hasta el 10 de cada mes.
+ - Fecha de corte (15): inicia el 11 hasta el 15 de cada mes.
+- Fecha de corte (20): inicia el 16 hasta el 20 de cada mes.
+- Fecha de corte (25): inicia el 21 hasta el 25 de cada mes.
+4.1.5. Es responsabilidad del Analista Nacional Comercial gestionar y proveer la documentación requerida para el proceso de vinculación a todas las fuerzas comerciales.
+
+4.1.6. Es responsabilidad de la fuerza comercial validar que los campos del formulario estén debidamente diligenciados.
+4.1.7. Se realiza la consulta del prospecto asociado acorde a los documentos https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=270 y https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-dc-617_perfil_aspirante_asociado_gcca2.pptx&wdOrigin=BROWSELINK
+4.1.8. La fuerza comercial identificará a la persona expuesta públicamente (PEP) realizando preguntas de acuerdo al documento 
+4.1.9. Para la creación de usuarios de la fuerza comercial de MP en los aplicativos necesarios para la vinculación, se debe tener en cuenta el https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=19197 y en caso de presentarse novedades con las plataformas, es responsabilidad del Ejecutivo comercial de MP cargar caso en Remedy y remitir correo al Coordinador/a nal comercial GCCA con número de caso para brindar apoyo con la UTI.
+4.1.10. Durante el proceso de vinculación realizado por la fuerza comercial de MP, si se presentan dudas y/o inquietudes, es responsabilidad del Ejecutivo comercial de MP escalar la solicitud con el Gerente de zona GCCA a través de correo electrónico y copiar al Coordinador/a nal comercial GCCA. 
+4.1.11. Gestión Colaborador Grupo Coomeva
+
+Nuevo colaborador
+4.1.11.1. En el caso de los candidatos a nuevos colaboradores con salario igual o mayor a $1.250.000, se comenzará el proceso de vinculación cuando termine el proceso con el área de Selección USC.
+4.1.11.2. El Auxiliar de contratación USC regional, tienen como responsabilidad realizar la validación de los candidatos a colaborador en herramienta Taylor Multiactiva identificando quienes son asociados y quienes no, aquellos que son asociados, continúan su proceso de contratación y los que no son asociados, continúan con el proceso para gestión comercial de vinculación. 
+4.1.11.3. El Auxiliar de contratación USC regional, tienen como responsabilidad realizar el registro de la información necesaria para la vinculación de los candidatos a nuevo colaborador en el formulario web: https://lograloconcoomeva.com/colaboradores/ 
+4.1.11.4. El Analista nal conocimiento de asociados GCCA tiene como responsabilidad realizar la distribución de los candidatos a colaborador para la gestión comercial de vinculación de la siguiente forma:
+A.	Cargar en el aplicativo CRM la base de datos de los 12 candidatos a nuevo colaborador (los primeros 12 candidatos que se reciben en el mes) a la regional Cali y realizar la distribución a los 2 ejecutivos asignados para su gestión comercial (6 para cada uno de los ejecutivos). 
+B.	Enviar al Analista soporte logístico USC los demás candidatos para la asignación al equipo de agentes comerciales del canal.
+4.1.11.5. El Analista soporte logístico USC tiene la responsabilidad de cargar la base de datos enviada por el analista nal conocimiento del asociado GCCA, de los candidatos a nuevo colaborador en los aplicativos Arsen o Wolkvox. 
+NOTA: Se realizarán dos cargues en el día, uno en la mañana y el otro en la tarde.
+4.1.11.6. El Supervisor/a operaciones CSS tiene como responsabilidad, coordinar la asignación de un ejecutivo comercial para iniciar la gestión comercial de vinculación al día siguiente del cargue de la base de datos en Arsen o Wolvox (según la regional).
+4.1.11.7. Es responsabilidad del Ejecutivo/a comercial realizar la gestión comercial de vinculación de los candidatos a nuevo colaborador.
+4.1.11.8. El Ejecutivo/a comercial tiene como responsabilidad validar que el candidato a nuevo colaborador haya firmado el formato Cero Papel en caso de que este haya aceptado vincularse a la Cooperativa. Cabe aclarar que en caso de que no se haya firmado el formato, el mismo Ejecutivo/a debe realizar seguimiento diario hasta que se firme.
+4.1.11.9. El Ejecutivo/a comercial de USC tiene como responsabilidad registrar en Arsen o Wolkvox el código de cierre finalizado de “prospecto_efectivo_vinculación” al finalizar efectivamente la vinculación del candidato a nuevo colaborador.
+4.1.11.10. El Ejecutivo/a comercial de administración regional Cali tiene como responsabilidad registrar en CRM la gestión comercial realizada y notificar por correo electrónico al Coordinador/a reg. comercial GCCA, la confirmación de las vinculaciones efectivas con la imagen de Taylor y el formato de descuento de nómina diligenciado y firmado por el candidato (ver https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1853%2FGC-FT-034%2520Autorizaciones%2520Deducciones%2520de%2520Nomina%2520V5.xlsx&wdOrigin=BROWSELINK).
+4.1.11.11. El Analista soporte logístico USC tiene como responsabilidad elaborar, organizar y enviar el reporte de las vinculaciones de los candidatos a nuevo colaborador al Auxiliar de contratación USC regional para que estas puedan dar continuidad al proceso de contratación cuando en el reporte se visualice el código: “prospecto_efectivo_vinculación”.
+Nota: El reporte se envía al día siguiente con la gestión del día anterior y contendrá datos como: nombre del ejecutivo que realizó la gestión (para más información se deberá contactar al líder), código de vinculación, valor de la cuota a pagar por el nuevo colaborador en la columna de observaciones, entre otras.
+4.1.11.12. El Coordinador/a reg. Comercial GCCA tiene como responsabilidad consolidar y enviar por correo electrónico el reporte de vinculaciones de los candidatos a nuevo colaborador a al Auxiliar de contratación USC regional y con copia al Director/a reg. Comercial GCCA, para que puedan dar continuidad al proceso de contratación. En dicho reporte se debe adjuntar los formatos de descuento de nómina diligenciados y firmados por los candidatos (ver https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1853%2FGC-FT-034%2520Autorizaciones%2520Deducciones%2520de%2520Nomina%2520V5.xlsx&wdOrigin=BROWSELINK).
+4.1.11.13. El Coordinador/a reg. Comercial GCCA tiene como responsabilidad, reportar al Analista nal de conocimiento del asociado GCCA las novedades frente a los candidatos recibidos (ej. candidato ya gestionado por otro ejecutivo, candidato que ya aparece como asociado, etc.) para que dicho registro sea reemplazado por uno nuevo.
+4.1.11.14. El Coordinador/a reg. comercial GCCA tiene como responsabilidad enviar al final de cada mes un reporte consolidado con cada registro carterizado por los Ejecutivos comerciales al director/a reg. comercial GCCA y al Jefe/a nal. selección y contratación USC.
+Antiguo Colaborador
+4.1.11.15. Se realizará gestión a través de las fuerzas comerciales y/o empresas originadoras: ver documento https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=12474 
+Nota: La vinculación de los colaboradores del GECC no dependerá del puntaje de acierta para el ingreso como asociado
+4.1.12. US. Person
+4.1.12.1 La fuerza comercial Identificará al “US Person” a través de la información recaudada en el momento de la vinculación realizando las preguntas para identificar esta persona.
+4.1.12.2. Si un cliente actual o potencial presenta alguno de los siguientes indicios, podría ser considerada como una US Person:
+a.	Cliente figura como nacido en EE.UU.
+b.	Se identifica como residente o ciudadano americano (Posee Green Card). Tenga asociada a la cuenta una dirección en EE.UU.
+c.	Tenga asociado un teléfono en los EE.UU.
+d.	Instrucciones permanentes para enviar/recibir dinero hacia/desde una cuenta mantenida en EE.UU.
+e.	Poder notarial o firma autorizada concebida a una persona que tenga dirección dentro de los EE.UU.
+f.	Una segunda dirección postal en EE.UU o una dirección postal a la que redireccionar la correspondencia en EE.UU asociada a la cuenta.
+g.	La fuerza comercial debe diligenciar el formato https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fcopia_de_co-ft-695_declaracion_fatca_r.xlsx&wdOrigin=BROWSELINK en el momento de la vinculación a la cooperativa, este será anexo para la solicitud de vinculación
+
+4.2. SOPORTES DOCUMENTALES
+4.2.1. Una vez diligenciado y firmado los formatos:
+•	https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-ft-166_-_autorizacion_consulta_centrales_de_riesgo_septiem_2018_(3).docx&wdOrigin=BROWSELINK  (manejo del formulario de acuerdo al númeral 4.1.2.)
+•	
+•	https://coomalin.darumasoftware.com/uploads/staff/assets/user5202/archivos/CO-FT-200%20Formulario%20de%20vinculacion%20HM297724%20PEP.pdf 
+La fuerza comercial solicitará al prospecto asociado los siguientes documentos soporte:
+a.	Imagen de la cédula de ciudadanía o extranjería del prospecto asociado. En caso de no tenerla, puede presentar contraseña de la misma expedida por la Registraduría Nacional del Estado Civil, anexando imagen de algún otro tipo de documento de carácter oficial que permita determinar la identidad de la persona, este documento puede ser el pasaporte, el pasado judicial, la libreta militar o la licencia de conducción con foto, que permita validar el número de cédula. Cuando se trate de trámite de cédula por primera vez (contraseña), no se deberá presentar otro documento, siempre y cuando la vigencia de la contraseña no sea superior a 6 meses.
+b.	Formato https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-ft-166_-_autorizacion_consulta_centrales_de_riesgo_septiem_2018_(3).docx&wdOrigin=BROWSELINK  . (manejo del formulario de acuerdo al numeral 4.1.2.)
+c.	Exámenes médicos (si aplica). Este depende de la auditoria medica realizada luego de la vinculación como asociado. 
+ Documentos por categoría:
+La solicitud de estos documentos puede variar conforme a las estrategias o alianzas que establezca la Gerencia Corporativa de Comunidad de Asociados. 
+
+REQUISITOS DOCUMENTACIÓN DE LA CATEGORÍA 
+
+CATEGORÍA: ESTUDIANTES ASALARIADOS 
+•	Certificación expedida por institución de educación superior reconocida por el Estado o mediante copia del recibo de pago del periodo académico en curso, en donde conste que está cursando estudios de carrera técnica, tecnológica o profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consultas centrales de riesgo. (manejo del formulario de acuerdo con el numeral 4.1.2.).
+•	Certificado de ingresos que especifique el valor del salario, desprendible de nómina, o el contrato a término fijo firmado por ambas partes donde se identifique que este activo, extractos bancarios de los últimos tres meses donde se visualice el pago por nómina, carta laboral no mayor a 30 días o menor a 60 días si es verificada (nombre de quien valida, firma de quien valida, hora de validación y nombre con quien confirma la carta) y firmada por el Gerente de Zona o Coordinador Regional Comercial (no puede ser expedida por un familiar del prospecto asociado), declaración de renta 230. (manejo del certificado de acuerdo con el numeral 4.2.2.)
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos. 
+Rango de aportes 0.3%
+
+CATEGORÍA: ESTUDIANTES INDEPENDIENTES
+•	 Certificación expedida por institución de educación superior reconocida por el Estado o mediante copia del recibo de pago del periodo académico en curso, en donde conste que está cursando estudios de carrera técnica, tecnológica o profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Carta de contador (original o copia) no mayor a 30 días con fotocopia de la tarjeta profesional (no puede ser expedida por un familiar del prospecto asociado) o declaración de renta (110,210 o 220) o extractos o movimientos bancarios de los últimos 3 meses.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos. 
+Aportes 0.3%
+
+CATEGORÍA: ESTUDIANTES QUE NO LABORAN
+•	Certificación expedida por institución de educación superior reconocida por el Estado o mediante copia del recibo de pago del periodo académico en curso, en donde conste que está cursando estudios de carrera técnica, tecnológica o profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Indicar el valor de la mesada otorgada por el padre (campo otros ingresos del formulario cero o del Solicitud Única de Asociación Persona Natural (CO-FT-200) 
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+
+CATEGORÍA: EGRESADO RECIÉN GRADUADO/ PROFESIONALES/ TÉCNICOS Y TECNÓLOGOS ASALARIADOS.
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Carta laboral.
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Diploma, acta de grado o tarjeta profesional no mayor a 3 años (Solo recién graduados).
+•	Certificado de ingresos que especifique el valor del salario, desprendible de nómina, o el contrato a término fijo firmado por ambas partes donde se identifique que este activo, extractos bancarios de los últimos tres meses donde se visualice el pago por nómina, carta laboral no mayor a 30 días o menor a 60 días si es verificada (nombre de quien valida, firma de quien valida, hora de validación y nombre con quien confirma la carta) por el Gerente de Zona o Coordinador Regional Comercial (no puede ser expedida por un familiar del Prospecto Asociado ), declaración de renta 230. (manejo del certificado de acuerdo al numeral 4.2.2.)
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota 1: el tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+Nota 2: el Asociado puede permanecer en la categoría egresado recién graduado hasta 3 años después de la fecha de graduación, posterior a esto será re categorizado automáticamente en profesional o técnico o tecnólogo.
+El rango de aportes es: egresado recién graduado entre el 1% al 4%, profesionales del 5% al 20% y técnicos y tecnólogos el 2.5%.
+
+CATEGORÍA: EGRESADO RECIÉN GRADUADO/ PROFESIONALES/ TÉCNICOS Y TECNÓLOGOS INDEPENDIENTES
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Carta laboral.
+•	Fotocopia o imagen legible de la cédula.
+•	Consultas centrales de riesgo. (manejo del formulario de acuerdo con el numeral 4.1.2.)
+•	Diploma, acta de grado o tarjeta profesional no mayor a 3 años (Solo recién graduados).
+•	Carta de contador (original o copia) no mayor a 30 días con fotocopia de la tarjeta profesional (no puede ser expedida por un familiar del Prospecto Asociado) o declaración de renta (110,210 o 220) o extractos o movimientos bancarios de los últimos 3 meses.
+•	Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota 1: el tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+Nota 2: el Asociado puede permanecer en la categoría egresado recién graduado hasta 3 años después de la fecha de graduación, posterior a esto será recategorizado automáticamente en profesional o técnico o tecnólogo.
+Rango de aportes entre el 0.3% al 1.2% y del 1% al 4%. 
+
+CATEGORÍA: EGRESADO RECIÉN GRADUADO/ PROFESIONALES/ TÉCNICOS Y TECNÓLOGOS PENSIONADO
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional.
+•	Formato de vinculación (electrónico o físico).
+•	Carta laboral. (manejo del certificado de acuerdo al numeral 4.2.2.)
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.)
+•	Diploma, acta de grado o tarjeta profesional no mayor a 3 años (Solo recién graduados).
+•	Resolución de pensión con fecha de expedición, extractos bancarios de los dos últimos meses, desprendible de pago del último mes.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de cero papel.
+Nota 1: el tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+Nota 2: el Asociado puede permanecer en la categoría egresado recién graduado hasta 3 años después de la fecha de graduación, posterior a esto será re categorizado automáticamente en profesional o técnico o tecnólogo
+
+CATEGORÍA: EMPLEADO NO PROFESIONAL DEL GRUPO EMPRESARIAL COOPERATIVO COOMEVA
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Carta laboral.
+•	Autorización Deducciones por Nómina (GC-FT-034) para colaboradores con SMMLV superiores a $3.500.000 (el formato aplica para vinculaciones con formulario físico).
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+
+Rango de aportes entre el 0.3% al 1.2% y del 1% al 4%. 
+
+
+CATEGORÍA: ASESOR/A COMERCIAL
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Carta laboral.
+•	Autorización Deducciones por Nómina (GC-FT-034) (el formato aplica para vinculaciones con formulario físico).
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+
+CATEGORÍA: ASESOR/A COMERCIAL:  MAYOR DE 60 AÑOS
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional. (este soporte no aplica para aquellos prospectos que son familiar de asociados).
+•	Carta laboral.
+•	Certificado de ingresos que especifique el valor del salario, desprendible de nómina, o el contrato a término fijo firmado por ambas partes donde se identifique que este activo, extractos bancarios de los últimos tres meses donde se visualice el pago por nómina, carta laboral no mayor a 30 días o menor a 60 días si es verificada (nombre de quien valida, firma de quien valida, hora de validación y nombre con quien confirma la carta) por el Gerente de Zona o Coordinador Regional Comercial (no puede ser expedida por un familiar del prospecto asociado), declaración de renta 230. (manejo del certificado de acuerdo al numeral 4.2.2.).
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+
+CATEGORÍA: MAYORES DE 60 AÑOS INDEPENDIENTES
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional. (este soporte no aplica para aquellos prospectos que son familiar de asociados).
+•	Carta laboral.
+•	Carta de contador (original o copia) no mayor a 30 días con fotocopia de la tarjeta profesional (no puede ser expedida por un familiar del Prospecto Asociado) o declaración de renta (110,210 o 220) o extractos o movimientos bancarios de los últimos 3 meses.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos
+Rango de aportes del 5% al 20 % y del 3% al 12%.
+
+CATEGORÍA: MAYORES DE 60 AÑOS PENSIONADO
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consultas centrales de riesgo. (manejo del formulario de acuerdo con el numeral 4.1.2.).
+•	Diploma de grado o postgrado o acta de grado o tarjeta profesional. (este soporte no aplica para aquellos prospectos que son familiar de asociados).
+•	Carta laboral. (manejo del certificado de acuerdo al numeral 4.2.2.).
+•	Resolución de pensión con fecha de expedición, extractos bancarios de los dos últimos meses, desprendible de pago del último mes.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Rango de aportes del 3% al 12%
+
+CATEGORÍA: FAMILIAR ASOCIADO / FAMILIAR ASOCIADO FALLECIDO ASALARIADO
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Datos de presentación familiar asociado activo en la cooperativa (en este caso se diligenciará el campo Asociación Grupo Familiar de la solicitud única de asociación persona natural.
+•	Acta de defunción no mayor a 6 meses (en caso de que el familiar asociado haya fallecido) y debe tener el parentesco de: cónyuge o compañero (a) permanente, hijos, padres o hermanos.
+•	Certificado de ingresos que especifique el valor del salario, desprendible de nómina, o el contrato a término fijo firmado por ambas partes donde se identifique que este activo, extractos bancarios de los últimos tres meses donde se visualice el pago por nómina, carta laboral no mayor a 30 días o menor a 60 días si es verificada (nombre de quien valida, firma de quien valida, hora de validación y nombre con quien confirma la carta)  por el Gerente de Zona o Coordinador Regional Comercial (no puede ser expedida por un familiar del prospecto asociado), declaración de renta 230. (manejo del certificado de acuerdo al numeral 4.2.2.).
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+Rango de aportes del 5% al 20% 
+
+CATEGORÍA: FAMILIAR ASOCIADO / FAMILIAR ASOCIADO FALLECIDO INDEPENDIENTE
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+•	Datos de presentación familiar asociado activo en la cooperativa (en este caso se diligenciará el campo Asociación Grupo Familiar del la solicitud única de asociación persona natural.
+•	Acta de defunción no mayor a 6 meses (en caso de que el familiar asociado haya fallecido) y debe tener el parentesco de: cónyuge o compañero (a) permanente, hijos, padres o hermanos.
+•	Carta de contador (original o copia) no mayor a 30 días con fotocopia de la tarjeta profesional (no puede ser expedida por un familiar del Prospecto Asociado) o declaración de renta (110,210 o 220) o extractos o movimientos bancarios de los últimos 3 meses.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+
+CATEGORÍA: FAMILIAR ASOCIADO / FAMILIAR ASOCIADO FALLECIDO PENSIONADO
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.)
+•	Datos de presentación familiar asociado activo en la cooperativa (en este caso se diligenciará el campo Asociación Grupo Familiar de la solicitud única de asociación persona natural.
+•	Acta de defunción no mayor a 6 meses (en caso de que el familiar asociado haya fallecido) y debe tener el parentesco de: cónyuge o compañero (a) permanente, hijos, padres o hermanos.
+•	Resolución de pensión con fecha de expedición, extractos bancarios de los dos últimos meses, desprendible de pago del último mes.
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos.
+
+CATEGORÍA: EMPRESAS O UNIDADES ECONÓMICAS CUANDO SUS PROPIETARIOS TRABAJEN EN ELLAS Y PREVALEZCA EL TRABAJO FAMILIAR O ASOCIADO
+•	Formato de vinculación (electrónico o físico).
+•	Fotocopia o imagen legible de la cédula del representante legal.
+•	Cámara de comercio con fecha de constitución igual o mayor a dos años.
+•	
+•	Certificado de ingresos del representante legal.
+•	Consulta centrales de riesgo. (manejo del formulario de acuerdo al numeral 4.1.2.).
+Cotización de vinculación plan básico: al generar el resultado de la cotización del plan básico se debe descargar y adjuntar el documento formato PDF  en el campo pagaré o desistimiento del formulario de vinculación.
+Nota: El tipo de actividad económica debe ser de donde reciba la mayor cantidad de ingresos
+Rango de aportes del 05% al 40 %.							
+4.2.2. Se debe solicitar la carta laboral o certificado de ingresos para los siguientes prospectos asociados:
+•	Cuando su ingreso sea inferior a $1.500.000
+•	Cuando labore en:
+o	Fuerzas Militares.
+o	Servidores Públicos.
+o	Independientes.
+•	Asalariado que, al verificar su salario informado en la fuente externa, arroje resultado por debajo o por encima del 20% del validador de ingresos.
+4.2.3. En los casos de que esta información requiera ser almacenada en los equipos de cómputo que utiliza la fuerza comercial para gestión y seguimiento, se deben guardar en el escritorio del PC de cada usuario y la preservación será de máximo un mes. 
+
+4.2.4. Para el caso de los docentes del sector oficial se omitirá el acta o diploma de grado, esto amparado bajo el decreto 1278 junio 19 del 2002 - articulo 7 y ley 115 de febrero 8 de 1994 – articulo 115 
+4.2.5. Para el caso de que el prospecto asociado dependa económicamente de otra persona diligenciará el formato https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-ft-698_carta_de_manifiesto_de_responsabilidad_r-2.docx&wdOrigin=BROWSELINK, esto bajo la aprobación de la Dirección Nacional Comercial (los estudiantes están exentos del manifiesto)
+
+4.2.6. Los cambios de categorías y porcentajes de aportes se podrán realizar conforme lo establecido en el documento https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=310
+4.2.7. Para el ingreso del prospecto asociado con plan básico especial depende de sus condiciones de salud: índice de masa corporal mayor o igual a 25%, respuesta afirmativa en las preguntas de salud y prospecto asociado mayor o igual a 45 años.
+
+4.2.8. La vigencia de la cédula de extranjería será por un término igual al de la vigencia de la visa del titular o beneficiario. En caso tal que se haya otorgado visa con término indefinido con anterioridad a la entrada en vigencia del decreto 0834 del 24 de abril de 2013, deberá ser solicitada y expedida cada cinco (5) años.
+4.2.9. Los empleados del estado que se vinculen a la Cooperativa y presenten como soporte de ingresos el contrato por prestación de servicios se grabarán como empleados (dependientes), en caso de que presente como soporte de ingresos extractos bancarios serán grabados en el sistema como independientes.
+4.2.10. Todo cargo de la fuerza comercial deberá seguir los lineamientos descritos en el instructivo Consideraciones Para la Validación de Documentos de Identidad (CO-IN-645) para validar la autenticidad de las cédulas aportadas por el prospecto asociado.
+
+4.3. RECEPCIÓN DOCUMENTAL
+4.3.1. En caso de contingencia y la vinculación se haya registrado por medio del formulario en físico la fuerza comercial debe entregar los soportes documentales al Coordinador/a Reg. Comercial o Gerente de Zona asegurando que la solicitud de vinculación cumpla con todos los documentos soporte acorde a la categoría y de estos, realizar la gestión necesaria para entrega de los soportes al área de operaciones. 
+4.3.2. El/la Auxiliar Reg. Soporte Operación Gestión Comercial o la persona designada, debe asegurarse que los datos diligenciados en el formulario se encuentren de forma clara y completa, adicional que los beneficiarios se encuentren bien diligenciados y distribuidos. 
+
+4.4. REVISIÓN DOCUMENTAL
+4.4.1. La revisión documental se realiza de acuerdo a lo establecido en el https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=890.
+
+4.5. VALIDACIONES AL PROSPECTO ASOCIADO
+4.5.1. El detalle de las actividades relacionadas a las centrales de riesgo se evidenciará en el https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=270 
+4.5.2 Es responsabilidad del comité regional de ingresos revisar los casos de los prospectos asociados cuyos resultados de las diferentes validaciones no cumplen las condiciones para la vinculación a Coomeva.
+4.5.3. El Comité regional de ingresos está conformado por:             
+
+•	Coordinador/a Regional de Recaudo y Retención
+
+•	Director/a Regional Comercial
+
+4.5.4 Su objetivo es analizar los casos del prospecto asociado cuyos puntajes de acierta sea inferior a 620 pero que las demás variables aplican para la vinculación a la cooperativa y aquellos que según el presente instructivo y el https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=270, no pueden ingresar, pero cumplen con características especiales para su vinculación. estos casos deben estar relacionados en el documento https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcoomalin.darumasoftware.com%2Fuploads%2Fstaff%2Fassets%2Fuser1142%2Fco-ft-280_comite_reg_de_ingresos_vinculaciones.docx&wdOrigin=BROWSELINK y se emitirá el concepto vía email al auxiliar de soporte operativo comercial.
+Estás actas serán custodiadas de manera física y digital por la dirección regional comercial.
+4.5.5. Cada regional será monitoreada desde la Dirección Nacional, mediante la generación de reporte de ingresos de asociados con condiciones especiales, verificando su inclusión en SARA como soporte de decisión, verificando su estado posterior (Estado Activo), y verificando cumplimiento de requisitos adicionales (compra de Medicina Prepagada y/o mayor valor en Previsión Asistencia y Solidaridad).
+La Dirección Nacional Comercial podrá solicitar sin previo aviso, las revisiones pertinentes de la aplicación del procedimiento por parte de la auditoria corporativa.
+4.5.6. En caso de que no se cumpla con el puntaje de acierta la fuerza comercial debe informar al prospecto asociado, verbalmente de una manera clara, sobre la restricción para productos financieros en la cooperativa, hasta tanto mejore su situación financiera. Si el prospecto asociado acepta las condiciones se podrá continuar con el proceso de lo contrario se dará por finalizado.
+4.5.7 En el evento en que se presenten novedades en la consulta de centrales de riesgo y estas ya estén solucionadas, el prospecto asociado deberá presentar los respectivos paz y salvos como evidencia de que su situación está normalizada.
+Nota: El auxiliar de soporte operativo comercial o quien sea designado debe informar a la fuerza comercial las novedades de las consultas.
+4.5.8. Para los empleados de las diferentes empresas del GECC, no se tendrá en cuenta el promedio de acierta ni la probabilidad de permanencia como parámetro de vinculación a la cooperativa.
+4.5.9. Para el caso en el que el prospecto asociado se encuentre reportado en la lista de control o confidencial de la Contraloría General de la República, el Oficial de Cumplimiento debe definir si acepta o rechaza la solicitud, previo estudio realizado en conjunto con el área de cumplimiento. Si es rechazada, no se podrá realizar la vinculación y se debe informar al prospecto asociado.
+
+4.6. SEGUIMIENTO COMERCIAL
+
+4.6.1 El Director/a Nacional Comercial GCCA semanalmente es el responsable de realizar seguimiento al número de vinculaciones establecidas por regional, Directores Regionales comerciales GCCA, Coordinador/a Regional Comercial GCCA o Gerente de Zona con el fin de tener una mayor trazabilidad en los indicadores (resultados), esto se realiza con base en los documentos https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=6453, https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=12708 
+
+4.6.2. Diariamente el Coordinador/a Nacional Comercial GCCA, es el responsable de realizar seguimiento al número de vinculaciones establecidas por regional, Directores Regionales Comerciales, Coordinador/a Regional Comercial GCCA o Gerente de Zona con el fin de tener una mayor trazabilidad en los indicadores (resultados), esto se realiza con base en los documentos https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=6453, https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=12708
+
+4.6.3 La fuerza comercial, coordinadores comerciales y/o Gerente de Zona deben ingresar diariamente la gestión realizada en el aplicativo CRM, con el fin de realizar seguimiento a las metas comerciales.
+
+4.6.4. Es responsabilidad del jefe inmediato de cada ejecutivo de la fuerza comercial (Coordinador/a Reg. Comercial GCCA, Gerente de zona), realizar seguimiento con base en los documentos https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=6453, https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=12708.
+4.6.5. Es responsabilidad del Coordinador/a nal comercial GCCA, realizar reunión mensual para resultados de vinculaciones con los Ejecutivos de MP y reunión dos veces al mes con Director/a nal comercial GCCA para revisión de metas por vinculación inversa con MP.
+4.6.6. De forma mensual se debe programar reunión entre el Director/a nal comercial GCCA y Director/a nal comercial MP para revisión de resultados del canal y definición de plenaria de refuerzo en temas comerciales de la cooperativa.
+
+4.7. MODELO DE LIQUIDACIÓN
+4.7.1 Una vez la vinculación se haga efectiva se liquidará a la fuerza comercial conforme a los documentos: 
+•	https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=2716
+•	https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=2095 
+•	https://coomalin.darumasoftware.com/app.php/staff/document/viewPublic?index=2870 
+
+4.7.2. El modelo de liquidación para la fuerza comercial de MP que realicen vinculaciones a la cooperativa, es el siguiente:
+•	La liquidación de la comisión se realiza de forma mensual de acuerdo con el cronograma establecido por Gestión Humana GCCA y se realiza con base en el pago de la primera factura del asociado vinculado.
+•	Se paga el valor establecido ($250,000) de acuerdo con las políticas del modelo de comisiones y se realiza a través de People Pass.
+
+4.8. MODELOS OPERATIVOS
+
+4.8.1 .  M.O. ALTO NIVEL DE VINCULACIÓN: https://coomalin.darumasoftware.com/uploads/staff/assets/user2157/M.O.%20Alto%20nivel%20vinculaci%C3%B3n_V5.png 
+4.8.2.  M.O. VINCULACIÓN CÉLULA NAL/ REG. CSS: https://coomalin.darumasoftware.com/uploads/staff/assets/user2157/M.O.%20Vinculaci%C3%B3n%20c%C3%A9lula%20nal_regional%20css.png  
+4.8.3. M.O. VINCULACION FUERZA COMERCIAL TRADICIONAL: https://coomalin.darumasoftware.com/uploads/staff/assets/user2157/M.O.%20Vinculaci%C3%B3n%20fuerza%20comercial%20tradicional__.png  
+4.8.4. M.O. VINCULACIÓN NUEVOS COLABORADORES: https://coomalin.darumasoftware.com/uploads/staff/assets/user2157/M.O.%20Vinculaci%C3%B3n%20Nuevos%20Colaboradores_v8.png 
+Monica Isabel Barragan Hernandez @ 2025-03-07, 10:00:46 
+

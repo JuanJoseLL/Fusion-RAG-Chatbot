@@ -53,6 +53,7 @@ def get_logger(name=None):
 
 
 UPLOAD_DIR = 'data/context_files'
+SOURCE_FILES_DIR = os.getenv("SOURCE_FILES_DIR", "txt-files") # Directory for source files to be processed
 EMBBEDING_TIMEOUT = 30
 EMBBEDING_RETRIES = 3
 

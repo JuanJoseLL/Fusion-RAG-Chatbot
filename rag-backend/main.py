@@ -4,6 +4,7 @@ from fastapi import FastAPI, UploadFile, Form, HTTPException, Depends, Backgroun
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
+from contextlib import asynccontextmanager # Added for lifespan manager
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
@@ -26,7 +27,8 @@ from config import (
     MODEL_NAME,
     ENTITY_LABELS_TO_EXTRACT,
     RRF_STANDARD_K,      # New config for RRF
-    RRF_MULTI_QUERY_K    # New config for RRF
+    RRF_MULTI_QUERY_K,   # New config for RRF
+    SOURCE_FILES_DIR     # New config for source files directory
     )
 
 
@@ -56,8 +58,69 @@ except Exception as e:
     raise RuntimeError(f"Failed to initialize core components: {e}")
 
 
+def bulk_ingest_from_source_directory():
+    logger.info(f"Starting bulk ingestion from directory: {SOURCE_FILES_DIR}")
+    processed_files = 0
+    failed_files = 0
 
-app = FastAPI(title="Fusion-RAG Agent", version="1.0.0")
+    if not os.path.exists(SOURCE_FILES_DIR):
+        logger.warning(f"Source files directory not found: {SOURCE_FILES_DIR}. Skipping bulk ingestion.")
+        return
+
+    for filename in os.listdir(SOURCE_FILES_DIR):
+        file_path = os.path.join(SOURCE_FILES_DIR, filename)
+        
+        if not os.path.isfile(file_path):
+            logger.debug(f"Skipping non-file item: {filename}")
+            continue
+
+        if filename.lower().endswith((".txt", ".pdf")):
+            logger.info(f"Found supported file for ingestion: {filename}")
+            try:
+                # Generate document_id similar to upload_context
+                # Note: ingest_pipeline itself doesn't create/save the file, 
+                # it expects a path to an existing file.
+                # The original upload_context saves the file first, then calls ingest_pipeline.
+                # Here, the files are already in SOURCE_FILES_DIR.
+                sanitized_filename = os.path.basename(filename) # Should be same as filename here
+                document_id = "doc_" + sanitized_filename.replace(".", "_").replace(" ", "_")
+                
+                # Call ingest_pipeline directly.
+                # ingest_pipeline takes file_path and document_id
+                # It handles load_and_split_document and adding to ChromaDB.
+                # It runs in the foreground here, not as a background task.
+                ingest_pipeline(file_path, document_id)
+                logger.info(f"Successfully initiated ingestion for: {filename} with doc_id: {document_id}")
+                processed_files += 1
+            except Exception as e:
+                logger.error(f"Failed to ingest file {filename}: {e}", exc_info=True)
+                failed_files += 1
+        else:
+            logger.debug(f"Skipping unsupported file type: {filename}")
+    
+    logger.info(f"Bulk ingestion complete. Processed files: {processed_files}, Failed files: {failed_files}")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on startup
+    logger.info("Application startup: Initiating bulk ingestion...")
+    try:
+        # The bulk_ingest_from_source_directory is synchronous.
+        # If it were async, we would 'await' it.
+        # For now, running it directly is fine, but be aware it will block startup until complete.
+        # Consider running in a separate thread if it becomes too slow for startup.
+        bulk_ingest_from_source_directory()
+        logger.info("Bulk ingestion process completed during startup.")
+    except Exception as e:
+        logger.error(f"Error during startup bulk ingestion: {e}", exc_info=True)
+    
+    yield
+    
+    # Code to run on shutdown (if any)
+    logger.info("Application shutdown.")
+
+app = FastAPI(title="Fusion-RAG Agent", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

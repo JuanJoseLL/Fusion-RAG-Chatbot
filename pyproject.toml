@@ -10,10 +10,12 @@ dependencies = [
     "fastapi>=0.115.12",
     "google-cloud-aiplatform>=1.94.0",
     "langchain>=0.3.25",
+    "langchain-chroma>=0.2.3",
     "langchain-community>=0.3.24",
     "pymupdf>=1.26.0",
     "pypdf2>=3.0.1",
     "python-multipart>=0.0.20",
+    "streamlit>=1.45.1",
     "torch>=2.7.0",
     "transformers>=4.52.3",
 ]

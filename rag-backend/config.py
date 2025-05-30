@@ -67,6 +67,13 @@ API_KEY = os.getenv("INFERMATIC_API_KEY") # Ensure this is set in your .env
 EMBEDDING_MODEL = "gemini-embedding-001" # Google Vertex AI embedding model
 MODEL_NAME = os.getenv("MODEL_NAME", "Sao10K-72B-Qwen2.5-Kunou-v1-FP8-Dynamic") # Added default value
 
+# --- Ollama LLM Configuration ---
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434")
+OLLAMA_MODEL_NAME = os.getenv("OLLAMA_MODEL_NAME", "llama3.1:8b") # Or your preferred Ollama model
+
+# --- General LLM Provider Configuration ---
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama") # Can be "qwen" or "ollama"
+
 # Google Vertex AI Configuration
 GOOGLE_PROJECT_ID = os.getenv("GOOGLE_PROJECT_ID", "your-project-id")
 GOOGLE_LOCATION = os.getenv("GOOGLE_LOCATION", "us-central1")
@@ -81,20 +88,15 @@ LLM_REPETITION_PENALTY = 1.2
 # --- RAG Config ---
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 500
-TOP_K_INITIAL_SEARCH = 5 # Vector search results (Legacy, consider for removal/replacement by RRF values)
 GRAPH_CONTEXT_NEIGHBORS = 5 # How many NEXT neighbors to fetch (0 = none) - Likely intended for knowledge graph traversal, specifying how many neighbor nodes/documents to retrieve to expand context.
-
-# RRF Configuration
-RRF_STANDARD_K = 5
-RRF_MULTI_QUERY_K = 3 # Each generated query from multi-query will fetch this many docs
-RRF_K_CONSTANT = 60 # Constant for RRF scoring formula
+SIMPLE_RETRIEVER_K = 5 # Number of documents for the simple retriever
 
 INGEST_SIMILARITY_THRESHOLD = 0.80 # Probably for identifying sufficiently similar documents/chunks during ingestion, e.g., to link them or flag for review.
 INGEST_SIMILAR_NEIGHBORS_TO_LINK = 5 # If similarity is found during ingestion, this might define how many of the most similar items to link.
 INGEST_ENABLE_INTRA_DOC_SIMILARITY = "true" # If "true", suggests that similarity checks should also be performed between chunks originating from the same document during ingestion.
 
 
-HF_MODEL_NAME =  "dslim/bert-base-NER"
-ENTITY_LABELS_TO_EXTRACT = ["PER", "ORG", "LOC"]
+# HF_MODEL_NAME =  "dslim/bert-base-NER" # No longer used
+# ENTITY_LABELS_TO_EXTRACT = ["PER", "ORG", "LOC"] # No longer used
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)

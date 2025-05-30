@@ -1,7 +1,7 @@
 from typing import List, Dict
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from config import get_logger, RRF_K_CONSTANT, RRF_STANDARD_K, RRF_MULTI_QUERY_K
